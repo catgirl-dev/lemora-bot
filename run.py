@@ -4,6 +4,7 @@ import logging
 from configuration.logging_config import setup_logging
 
 from configuration.environment import bot, dp, scheduler
+from handlers.birthday import birthday
 
 from handlers.commands.base import base
 from handlers.commands.admin.captcha_config import captcha_config
@@ -21,7 +22,16 @@ async def main():
     setup_logging()
     scheduler.start()
 
-    dp.include_routers(base, commands, lifecycle, chat_updates, admin, captcha_config)
+    dp.include_routers(
+        base,
+        commands,
+        lifecycle,
+        chat_updates,
+        admin,
+        captcha_config,
+        birthday
+    )
+
     logging.info("Бот запущен...")
     await dp.start_polling(bot)
 

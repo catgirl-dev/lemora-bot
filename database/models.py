@@ -53,7 +53,10 @@ class WelcomeMessages(Model):
 class BirthDays(Model):
     chat_id: IntegerField = IntegerField()
     user_id: IntegerField = IntegerField()
-    birthday: DateField = DateField()
+    birthday: DateField = CharField()
 
     class Meta:
-        database: SqliteDatabase = db
+        database = db
+        indexes = (
+            (('chat_id', 'user_id'), True),
+        )
