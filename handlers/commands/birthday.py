@@ -1,9 +1,12 @@
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram import Router
 
 from database.models import BirthDays
 from utils.birthday import parse_date
+
+from configuration.environment import bot
 
 birthday: Router = Router()
 
@@ -26,6 +29,10 @@ async def add_birthday(message: Message):
         user_id = int(args[1])
     except ValueError:
         await message.reply("user_id должен быть числом")
+        return
+
+    if user_id > 9223372036854775807 or user_id < 0:
+        await message.reply("Некорректный user_id!")
         return
 
     user, created = BirthDays.get_or_create(
@@ -88,6 +95,10 @@ async def change_birthday(message: Message):
         await message.reply("user_id должен быть числом")
         return
 
+    if user_id > 9223372036854775807 or user_id < 0:
+        await message.reply("Некорректный user_id!")
+        return
+
     date = parse_date(args[2])
 
     if not date:
@@ -110,19 +121,33 @@ async def change_birthday(message: Message):
 
 @birthday.message(Command('get_all_birthdays'))
 async def get_all_birthdays(message: Message):
-    """ Получить все Дни рождения """
-    users = BirthDays.select().where(
+    """ Показывает список дней рождения в чате """
+    birthdays = BirthDays.select().where(
         BirthDays.chat_id == message.chat.id
-    )
+    ).order_by(BirthDays.birthday)
 
-    if not users.exists():
-        await message.reply("Список дней рождения пуст")
+    if not birthdays:
+        await message.reply("Список дней рождения пуст.")
         return
 
-    text = "Дни рождения:\n\n"
+    text = ["Список дней рождения:\n"]
+    for b in birthdays:
+        try:
+            member = await bot.get_chat_member(message.chat.id, b.user_id)
+            user = member.user
+            if user.username:
+                name = f"@{user.username}"
+            else:
+                name = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+        except TelegramBadRequest:
+            name = f"@{b.username}" if b.username else f"пользователь {b.user_id}"
 
-    for user in users:
-        text += f"{user.user_id} — {user.birthday}\n"
+        if b.birthday and '-' in b.birthday:
+            month, day = b.birthday.split('-')
+            date_str = f"{day}.{month}"
+        else:
+            date_str = b.birthday
 
-    await message.reply(text)
+        text.append(f"{name} — {date_str}")
 
+    await message.reply("\n".join(text))

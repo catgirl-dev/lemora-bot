@@ -4,7 +4,7 @@ import logging
 from configuration.logging_config import setup_logging
 
 from configuration.environment import bot, dp, scheduler
-from handlers.birthday import birthday
+from handlers.commands.birthday import birthday
 
 from handlers.commands.base import base
 from handlers.commands.admin.captcha_config import captcha_config
