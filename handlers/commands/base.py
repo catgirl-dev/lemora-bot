@@ -24,4 +24,6 @@ async def start_message(message: Message):
     await message.reply(help_message_text, parse_mode='Markdown')
     generate_captcha_config(message.chat.id)
     await add_chat_to_db(message.chat.id)
-    await get_all_admins()
+    if message.chat.type == "group" or message.chat.type == "supergroup":
+        await get_all_admins()
+        return

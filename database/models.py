@@ -1,4 +1,4 @@
-from peewee import SqliteDatabase, Model, IntegerField, CharField, TextField
+from peewee import SqliteDatabase, Model, IntegerField, CharField, TextField, DateField
 
 db: SqliteDatabase = SqliteDatabase('userdata.db')
 
@@ -45,6 +45,15 @@ class WelcomeMessages(Model):
     welcome_message: TextField = TextField(
         default='Вы прошли капчу! Добро пожаловать!'
     )
+
+    class Meta:
+        database: SqliteDatabase = db
+
+
+class BirthDays(Model):
+    chat_id: IntegerField = IntegerField()
+    user_id: IntegerField = IntegerField()
+    birthday: DateField = DateField()
 
     class Meta:
         database: SqliteDatabase = db

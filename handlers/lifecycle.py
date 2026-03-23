@@ -13,6 +13,7 @@ lifecycle: Router = Router()
 async def on_startup():
     db.connect()
     db.create_tables([Chats, Users, Rules, WelcomeMessages, CaptchaConfigs])
+    # поменять
     await get_all_admins()
 
 
