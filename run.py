@@ -12,6 +12,9 @@ from handlers.commands.user import commands
 from handlers.lifecycle import lifecycle
 from handlers.chat_updates import chat_updates
 from handlers.commands.admin.moderation import admin
+from utils.birthday import check_birthdays
+from utils.setup_scheduler import setup_scheduler_jobs
+
 
 #  _._     _,-'""`-._
 # (,-.`._,'(      |\`-/|
@@ -20,6 +23,13 @@ from handlers.commands.admin.moderation import admin
 
 async def main():
     setup_logging()
+
+    setup_scheduler_jobs()
+    # await check_birthdays()
+
+    jobs = scheduler.get_jobs()
+    logging.info(f"Джобы: {[job.id for job in jobs]}")
+
     scheduler.start()
 
     dp.include_routers(
