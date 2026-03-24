@@ -24,7 +24,7 @@ async def check_birthdays():
         chats.setdefault(b.chat_id, []).append(b.user_id)
 
     for chat_id, users in chats.items():
-        text = "Сегодня день рождения у:\n"
+        text = "Сегодня День рождения у:\n"
 
         for user_id in users:
             try:

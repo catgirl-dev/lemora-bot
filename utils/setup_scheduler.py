@@ -6,8 +6,8 @@ def setup_scheduler_jobs():
     scheduler.add_job(
         check_birthdays,
         trigger="cron",
-        hour=22,
-        minute=35,
+        hour=10,
+        minute=30,
         id="daily_birthdays",
         replace_existing=True
     )
