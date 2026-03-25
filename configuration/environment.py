@@ -26,4 +26,3 @@ bot: Bot = Bot(TOKEN)
 dp: Dispatcher = Dispatcher()
 
 scheduler: AsyncIOScheduler = create_scheduler()
-# test
