@@ -21,4 +21,4 @@ jobs:
             git pull origin master
             source venv/bin/activate
             pip install -r requirements.txt
-            systemctl restart lemora
+            sudo systemctl restart lemora
