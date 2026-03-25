@@ -16,9 +16,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          debug: true
           script: |
-            cd /lemora-bot
+            cd /home/${{ secrets.SERVER_USER }}/lemora-bot
             git pull origin master
             source venv/bin/activate
             pip install -r requirements.txt
