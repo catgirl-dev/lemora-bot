@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from aiogram.exceptions import TelegramBadRequest
+
 from configuration.environment import bot
 
 from database.models import BirthDays
@@ -34,11 +36,22 @@ async def check_birthdays():
                 if user.username:
                     name = f"@{user.username}"
                 else:
-                    name = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+                    name = (
+                        f'<a href="tg://user?id={user.id}">'
+                        f"{user.first_name}</a>"
+                    )
 
-            except Exception:
+            except TelegramBadRequest:
                 name = f"пользователь {user_id}"
+
+            except Exception as e:
+                name = f"пользователь {user_id}"
+                print(f"[ERROR] user_id={user_id}: {e}")
 
             text += f"{name}\n"
 
-        await bot.send_message(chat_id, text)
+        await bot.send_message(
+            chat_id,
+            text,
+            parse_mode="HTML"
+        )
