@@ -4,13 +4,16 @@ from aiogram.filters import Command
 from aiogram import Router
 
 from database.models import BirthDays
+from filters.is_admin import IsAdmin
+from filters.is_group import IsGroup
 from utils.birthday import parse_date
 
 from configuration.environment import bot
 
 birthday: Router = Router()
+birthday.message.filter(IsGroup())
 
-@birthday.message(Command('add_birthday'))
+@birthday.message(Command('add_birthday'), IsAdmin())
 async def add_birthday(message: Message):
     """ Добавление Дня рождения пользователя """
     args = message.text.split()
@@ -50,7 +53,7 @@ async def add_birthday(message: Message):
 
     await message.reply("День рождения добавлен в БД")
 
-@birthday.message(Command('delete_birthday'))
+@birthday.message(Command('delete_birthday'), IsAdmin())
 async def delete_birthday(message: Message):
     """ Удаление Дня рождения пользователя """
     args = message.text.split()
@@ -78,7 +81,7 @@ async def delete_birthday(message: Message):
 
     await message.reply("День рождения успешно удалён")
 
-@birthday.message(Command('change_birthday'))
+@birthday.message(Command('change_birthday'), IsAdmin())
 async def change_birthday(message: Message):
     """ Изменение Дня рождения пользователя """
     args = message.text.split()
