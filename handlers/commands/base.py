@@ -2,6 +2,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from filters.is_group import IsGroup
 from texts.base import help_message_text
 from utils.admins_actualization import get_all_admins, add_chat_to_db
 from utils.captcha.captcha_tools import generate_captcha_config
@@ -19,11 +20,9 @@ async def help_message(message: Message):
     await message.reply(help_message_text, parse_mode='Markdown')
 
 
-@base.message(Command('start'))
+@base.message(Command('start'), IsGroup())
 async def start_message(message: Message):
     await message.reply(help_message_text, parse_mode='Markdown')
     generate_captcha_config(message.chat.id)
     await add_chat_to_db(message.chat.id)
-    if message.chat.type == "group" or message.chat.type == "supergroup":
-        await get_all_admins()
-        return
+    await get_all_admins()
