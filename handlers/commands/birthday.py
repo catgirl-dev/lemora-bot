@@ -134,16 +134,23 @@ async def get_all_birthdays(message: Message):
         return
 
     text = ["Список дней рождения:\n"]
+
     for b in birthdays:
         try:
             member = await bot.get_chat_member(message.chat.id, b.user_id)
             user = member.user
+
             if user.username:
                 name = f"@{user.username}"
             else:
                 name = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+
         except TelegramBadRequest:
-            name = f"@{b.username}" if b.username else f"пользователь {b.user_id}"
+            name = f"пользователь {b.user_id}"
+
+        except Exception as e:
+            name = f"пользователь {b.user_id}"
+            print(f"[ERROR] user_id={b.user_id}: {e}")
 
         if b.birthday and '-' in b.birthday:
             month, day = b.birthday.split('-')
@@ -153,4 +160,7 @@ async def get_all_birthdays(message: Message):
 
         text.append(f"{name} — {date_str}")
 
-    await message.reply("\n".join(text))
+    await message.reply(
+        "\n".join(text),
+        parse_mode="HTML"
+    )
