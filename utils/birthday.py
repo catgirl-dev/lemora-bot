@@ -34,7 +34,7 @@ async def check_birthdays():
                 user = member.user
 
                 if user.username:
-                    name = f"@{user.username}"
+                    name = f"{user.username}"
                 else:
                     name = (
                         f'<a href="tg://user?id={user.id}">'
