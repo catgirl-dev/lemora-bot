@@ -15,7 +15,7 @@ help_message_text: str = (
     "`/change_birthday` — изменить День рождения по ID пользователя. "
     "Пример: `/change_birthday <user_id> <DD>-<MM>`\n"
     "`/delete_birthday` — удалить День рождения по ID пользователя. Пример: "
-    "/delete_birthday <user_id>\n"
+    "`/delete_birthday <user_id>`\n"
     "`/change_captcha_time` — изменить время на прохождение капчи (часы)\n"
     "`/change_captcha_ban_time` — изменить срок блокировки за непрохождение капчи (секунды)"
 )
