@@ -16,16 +16,16 @@ from texts.base import kiss_message
 admin: Router = Router()
 admin.message.filter(IsGroup())
 
-@admin.message(Command('ban'), CanRestrict(), IsAdmin())
-async def ban_user(message: Message):
-    """ Команда должна быть ответом на сообщение пользователя, которого хочет заблокировать
-    администратор. """
-    if not message.reply_to_message:
-        await message.reply('Команда должна быть ответом на сообщение.')
-        return
-
-    await message.chat.ban(message.reply_to_message.from_user.id)
-    await message.reply('Пользователь получил удар банхаммером!')
+# @admin.message(Command('ban'), CanRestrict(), IsAdmin())
+# async def ban_user(message: Message):
+#     """ Команда должна быть ответом на сообщение пользователя, которого хочет заблокировать
+#     администратор. """
+#     if not message.reply_to_message:
+#         await message.reply('Команда должна быть ответом на сообщение.')
+#         return
+#
+#     await message.chat.ban(message.reply_to_message.from_user.id)
+#     await message.reply('Пользователь получил удар банхаммером!')
 
 
 @commands.message(Command('change_rules'), IsAdmin())

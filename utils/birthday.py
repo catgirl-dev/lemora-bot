@@ -9,7 +9,8 @@ from database.models import BirthDays
 
 def parse_date(date_str: str):
     try:
-        return datetime.strptime(date_str, "%m-%d").strftime("%m-%d")
+        date = datetime.strptime(date_str, "%d-%m")
+        return date.strftime("%m-%d")
     except ValueError:
         return None
 

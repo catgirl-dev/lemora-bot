@@ -21,7 +21,7 @@ async def add_birthday(message: Message):
     args = message.text.split()
 
     if len(args) != 3:
-        await message.reply("Для использования команды введите /add_birthday <user_id> <MM-DD>")
+        await message.reply("Для использования команды введите /add_birthday <user_id> <DD-MM>")
         return
 
     date = parse_date(args[2])
@@ -50,7 +50,7 @@ async def add_birthday(message: Message):
 
     if not created:
         await message.reply("День рождения для пользователя уже есть в БД. "
-                            "Для изменения даты используйте /change_birthday <user_id> <MM-DD>")
+                            "Для изменения даты используйте /change_birthday <user_id> <DD-MM>")
         return
 
     await message.reply("День рождения добавлен в БД")
@@ -90,7 +90,7 @@ async def change_birthday(message: Message):
 
     if len(args) != 3:
         await message.reply(
-            "Для использования команды введите /change_birthday <user_id> <MM-DD>"
+            "Для использования команды введите /change_birthday <user_id> <DD-MM>"
         )
         return
 
