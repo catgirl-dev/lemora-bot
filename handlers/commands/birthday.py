@@ -10,6 +10,8 @@ from utils.birthday import parse_date
 
 from configuration.environment import bot
 
+from html import escape
+
 birthday: Router = Router()
 birthday.message.filter(IsGroup())
 
@@ -139,17 +141,13 @@ async def get_all_birthdays(message: Message):
         try:
             member = await bot.get_chat_member(message.chat.id, b.user_id)
             user = member.user
-
-            if user.username:
-                name = f"@{user.username}"
-            else:
-                name = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+            name = f'<a href="tg://user?id={user.id}">{escape(user.full_name)}</a>'
 
         except TelegramBadRequest:
-            name = f"пользователь {b.user_id}"
+            name = f"Пользователь {b.user_id}"
 
         except Exception as e:
-            name = f"пользователь {b.user_id}"
+            name = f"Пользователь {b.user_id}"
             print(f"[ERROR] user_id={b.user_id}: {e}")
 
         if b.birthday and '-' in b.birthday:
