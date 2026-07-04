@@ -160,6 +160,5 @@ async def get_all_birthdays(message: Message):
         text.append(f"{name} — {date_str}")
 
     await message.reply(
-        "\n".join(text),
-        parse_mode="HTML"
+        "\n".join(text)
     )
