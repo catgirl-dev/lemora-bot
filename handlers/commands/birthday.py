@@ -2,6 +2,7 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram import Router
+from sqlalchemy.testing.plugin.plugin_base import logging
 
 from database.models import BirthDays
 from filters.is_admin import IsAdmin
@@ -27,7 +28,7 @@ async def add_birthday(message: Message):
     date = parse_date(args[2])
 
     if not date:
-        await message.reply("Неверный формат даты. Используйте MM-DD")
+        await message.reply("Неверный формат даты. Используйте DD-MM")
         return
 
     try:
@@ -107,7 +108,7 @@ async def change_birthday(message: Message):
     date = parse_date(args[2])
 
     if not date:
-        await message.reply("Неверный формат даты. Используйте MM-DD")
+        await message.reply("Неверный формат даты. Используйте DD-MM")
         return
 
     user = BirthDays.get_or_none(
@@ -141,14 +142,14 @@ async def get_all_birthdays(message: Message):
         try:
             member = await bot.get_chat_member(message.chat.id, b.user_id)
             user = member.user
-            name = f'<a href="tg://user?id={user.id}">{escape(user.full_name)}</a>'
+            name = user.full_name
 
         except TelegramBadRequest:
-            name = f"Пользователь {b.user_id}"
+            name = f"Пользователь c ID: {b.user_id}"
 
         except Exception as e:
-            name = f"Пользователь {b.user_id}"
-            print(f"[ERROR] user_id={b.user_id}: {e}")
+            name = f"Пользователь c ID: {b.user_id}"
+            logging.error(f"[ERROR] user_id={b.user_id}: {e}")
 
         if b.birthday and '-' in b.birthday:
             month, day = b.birthday.split('-')
